@@ -3,6 +3,7 @@ import * as React from 'react';
 export interface IRiskBoxData {
 	count: number;
 	colour: string;
+	hoverColour: string;
 	xVal: number;
 	yVal: number;
 }
@@ -42,7 +43,7 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 					color: 'white'
 				}}
 			>
-				<h3 style={{ color: 'white' }}>{this.props.riskData.count.toString()}</h3>
+				<h3 style={{ color: this.props.riskData.count == 0 ? 'transparent' : 'white' }}>{this.props.riskData.count.toString()}</h3>
 			</div>
 		);
 	}

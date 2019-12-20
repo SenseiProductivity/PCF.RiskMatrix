@@ -169,8 +169,10 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 		for (let i = 0; i < y; i++) {
 			arr[i] = []
 			for (let j = 0; j < x; j++) {
+				let col: string = this.calcRiskCategoryColour(i + 1, j + 1, this.lowThreshold, this.mediumThreshold)
 				arr[i][j] = {
-					colour: this.calcRiskCategoryColour(i + 1, j + 1, this.lowThreshold, this.mediumThreshold),
+					colour: col,
+					hoverColour: "black",
 					count: this.countRisks(i + 1, j + 1),
 					xVal: j + 1,
 					yVal: i + 1
