@@ -8,9 +8,7 @@ Ratings must be whole numbers between 1 and 5.
 
 ![Screenshot of risk matrix component](https://i.imgur.com/NVdgq2n.png)
 
-Copyright (c) 2019 Sensei Project Solutions
-
-[sensei.cloud](https://www.senseiprojectsolutions.com.au/)
+Copyright © 2019 [Sensei Project Solutions](https://www.senseiprojectsolutions.com.au/)
 
 ## Getting Started
 
