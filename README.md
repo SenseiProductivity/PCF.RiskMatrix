@@ -6,6 +6,8 @@ This is a DataSet component intended to be used in-place of the default control 
 On first release only a 5 x 5 grid will be supported, however in the near future grid sizing will be dynamic based on configuration.
 Ratings must be whole numbers between 1 and 5.
 
+![Screenshot of risk matrix component](https://i.imgur.com/NVdgq2n.png)
+
 ## Getting Started
 
 Either download a major release or build the project locally yourself.
