@@ -12,10 +12,20 @@ Ratings must be whole numbers between 1 and 5.
 
 Either download a major release or build the project locally yourself.
 
-## Build and Test
-
-TODO: Describe and show how to build your code and run the tests.
-
 ## Contribute
 
 We would love to consider implementing any customizations or new features that may be relevant to your use case; Please make sure to provide a detailed description of the use case when creating a pull request.
+
+## For packaging & deploying the solution, refer the below link
+
+ https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls 
+
+## Solution
+
+Solution|Author(s)
+--------|---------
+SenseiPCFRiskMatrix| Sensei Productivity
+
+## Disclaimer
+
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
