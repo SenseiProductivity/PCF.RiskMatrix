@@ -8,23 +8,21 @@ Ratings must be whole numbers between 1 and 5.
 
 ![Screenshot of risk matrix component](https://i.imgur.com/NVdgq2n.png)
 
+Copyright (c) 2019 Sensei Project Solutions
+
+[sensei.cloud](https://www.senseiprojectsolutions.com.au/)
+
 ## Getting Started
 
-Either download a major release or build the project locally yourself.
-
-## Contribute
-
-We would love to consider implementing any customizations or new features that may be relevant to your use case; Please make sure to provide a detailed description of the use case when creating a pull request.
+Check releases for a prebuilt file or build the project locally yourself.
 
 ## For packaging & deploying the solution, refer the below link
 
  https://docs.microsoft.com/en-us/powerapps/developer/component-framework/import-custom-controls 
+ 
+## Contribute
 
-## Solution
-
-Solution|Author(s)
---------|---------
-SenseiPCFRiskMatrix| Sensei Productivity
+Contribution is welcome, feel free to submit a pull request.
 
 ## Disclaimer
 
