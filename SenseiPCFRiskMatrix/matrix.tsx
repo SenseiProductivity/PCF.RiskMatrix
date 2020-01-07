@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MatrixBox, IRiskBoxData } from './matrixBox';
+import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox';
 import { IInputs } from './generated/ManifestTypes';
 
 export interface IMatrixProps {
@@ -7,7 +7,6 @@ export interface IMatrixProps {
 	context: ComponentFramework.Context<IInputs>;
 	xAxisTitle: string;
 	yAxisTitle: string;
-	//dataChanged?: (newData: []) => void
 }
 
 export interface IMatrixState extends React.ComponentState {}
@@ -21,13 +20,13 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	}
 
 	public render(): JSX.Element {
-		var width: number =
+		let width: number =
 			this.props.context.mode.allocatedWidth == -1 || isNaN(this.props.context.mode.allocatedWidth)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedWidth > this.MAX_SIZE
 					? this.MAX_SIZE
 					: this.props.context.mode.allocatedWidth;
-		var height: number =
+		let height: number =
 			this.props.context.mode.allocatedHeight == -1 || isNaN(this.props.context.mode.allocatedHeight)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedHeight > this.MAX_SIZE
@@ -207,7 +206,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		for (let y = 5; y > 0; y--) {
 			itemsX = [];
 			for (let x = 1; x <= 5; x++) {
-				itemsX.push(<MatrixBox key={x.toString() + y.toString()} riskData={this.props.data[y - 1][x - 1]} />);
+				itemsX.push(<MatrixBox 
+					key={x.toString() + y.toString()} 
+					riskData={this.props.data[y - 1][x - 1]}
+					/>);
 			}
 
 			itemsY.push(<div key={'y_' + y.toString()}>{itemsX}</div>);
@@ -215,4 +217,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 
 		return itemsY;
 	}
+
+	
+
 }

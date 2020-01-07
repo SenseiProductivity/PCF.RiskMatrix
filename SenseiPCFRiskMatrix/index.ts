@@ -16,25 +16,14 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet
 
 export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl < IInputs, IOutputs > {
 
-	private _context: ComponentFramework.Context < IInputs > 
-	private _notifyOutputChanged: () => void
-	//private _refreshData: EventListenerOrEventListenerObject
-	private _matrixProps: IMatrixProps
-
-	private _containerHeight: number
-	private _containerWidth: number
-
-
-	private _containerElement: HTMLDivElement
-
-	private _matrixElement: HTMLDivElement
-
-	private _xAxisElement: HTMLDivElement
-	private _yAxisElement: HTMLDivElement
-	private _headerElement: HTMLDivElement
-	private _dataSet: IRiskBoxData[][]
-	private _dataSetElements: any[]
-
+	private context: ComponentFramework.Context < IInputs >
+		private notifyOutputChanged: () => void
+	private matrixProps: IMatrixProps
+	private containerElement: HTMLDivElement
+	private matrixElement: HTMLDivElement
+	private dataSetElements: any[]
+	private containerHeight: number
+	private containerWidth: number
 	private lowThreshold: number
 	private mediumThreshold: number
 	private matrixSize: number
@@ -44,10 +33,10 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * Empty constructor.
 	 */
 	constructor() {
-		this._dataSetElements = []
-		this._matrixProps = {
+		this.dataSetElements = []
+		this.matrixProps = {
 			data: [],
-			context: this._context,
+			context: this.context,
 			xAxisTitle: "X",
 			yAxisTitle: "Y"
 		}
@@ -65,16 +54,15 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
 	 */
 	public init(context: ComponentFramework.Context < IInputs > , notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
-		console.warn("_init")
 		context.mode.trackContainerResize(true)
-		this._notifyOutputChanged = notifyOutputChanged
+		this.notifyOutputChanged = notifyOutputChanged
 
-		this._containerElement = document.createElement("div")
-		this._matrixElement = document.createElement("div")
+		this.containerElement = document.createElement("div")
+		this.matrixElement = document.createElement("div")
 
-		this._containerElement.appendChild(this._matrixElement)
-		this._containerWidth = context.mode.allocatedWidth || 250
-		container.appendChild(this._containerElement)
+		this.containerElement.appendChild(this.matrixElement)
+		this.containerWidth = context.mode.allocatedWidth || 250
+		container.appendChild(this.containerElement)
 	}
 
 
@@ -83,22 +71,21 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * @param context The entire property bag available to control via Context Object It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
 	 */
 	public updateView(context: ComponentFramework.Context < IInputs > ): void {
-		this._context = context
-		console.warn("_updateView")
-		console.log(context)
-		this._containerHeight = context.mode.allocatedHeight
-		this._containerWidth = context.mode.allocatedWidth
-		console.log("__containerHeight")
-		console.log(this._containerHeight)
-		console.log("__containerWidth")
-		console.log(this._containerWidth)
+		this.context = context
+		this.containerHeight = context.mode.allocatedHeight
+		this.containerWidth = context.mode.allocatedWidth
 
 		if (!context.parameters.Risks.loading) {
 
+			if (context.parameters.Risks.paging != null && context.parameters.Risks.paging.hasNextPage == true) {
+				context.parameters.Risks.paging.setPageSize(5000);
+				context.parameters.Risks.paging.loadNextPage();
+			}
+
 			this.getRecords(context.parameters.Risks)
-			this._matrixProps = {
+			this.matrixProps = {
 				data: this.initRiskArray(this.matrixSize, this.matrixSize),
-				context: this._context,
+				context: this.context,
 				xAxisTitle: "Likelihood",
 				yAxisTitle: "Consequence"
 			}
@@ -106,17 +93,16 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 			ReactDOM.render(
 				React.createElement(
 					Matrix,
-					this._matrixProps
+					this.matrixProps
 				),
-				this._matrixElement
+				this.matrixElement
 			)
 		}
 
 	}
 
 	private dataChanged(newDataset: []) {
-		console.warn("_dataChanged")
-		this._notifyOutputChanged()
+		this.notifyOutputChanged()
 	}
 
 	/** 
@@ -124,7 +110,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
 	 */
 	public getOutputs(): IOutputs {
-		console.warn("_getOutputs")
 		return {}
 	}
 
@@ -134,17 +119,16 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 */
 	public destroy(): void {
 		// Add code to cleanup control if necessary
-		ReactDOM.unmountComponentAtNode(this._containerElement)
+		ReactDOM.unmountComponentAtNode(this.containerElement)
 	}
 
 	private getRecords(gridParam: DataSet): void {
-		console.warn("_getRecords")
-		this._dataSetElements = []
+		this.dataSetElements = []
 		for (let currentRecordId of gridParam.sortedRecordIds) {
 			let probability = gridParam.records[currentRecordId].getFormattedValue("xAxisTitle")
 			let impact = gridParam.records[currentRecordId].getFormattedValue("yAxisTitle")
 			let name = gridParam.records[currentRecordId].getFormattedValue("riskName")
-			this._dataSetElements.push({
+			this.dataSetElements.push({
 				id: currentRecordId,
 				name: name,
 				impact: impact,
@@ -152,13 +136,13 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 			})
 		}
 
-		this._matrixProps.data = this._dataSetElements
+		this.matrixProps.data = this.dataSetElements
 
 
 	}
 
 	private countRisks(x: number, y: number) {
-		let count = this._dataSetElements.filter((e) => {
+		let count = this.dataSetElements.filter((e) => {
 			return e.impact == x && e.probability == y
 		}).length
 		return count
@@ -179,8 +163,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 				}
 			}
 		}
-		console.warn("_initRiskArray")
-		console.warn(arr)
 		return arr
 	}
 
