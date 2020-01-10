@@ -11,8 +11,8 @@
     </data-set>
     <resources>
       <code path="index.ts" order="1"/>
-      <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/SenseiPCFRiskMatrix.css" order="1" />
+      <!-- UNCOMMENT TO ADD MORE RESOURCES
       <resx path="strings/SenseiPCFRiskMatrix.1033.resx" version="1.0.0" />
       -->
     </resources>

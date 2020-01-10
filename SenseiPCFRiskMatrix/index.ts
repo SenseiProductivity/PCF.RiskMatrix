@@ -12,12 +12,14 @@ import {
 	IRiskBoxData
 } from "./matrixBox"
 
+
 type DataSet = ComponentFramework.PropertyTypes.DataSet
+
 
 export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl < IInputs, IOutputs > {
 
 	private context: ComponentFramework.Context < IInputs >
-		private notifyOutputChanged: () => void
+	private notifyOutputChanged: () => void
 	private matrixProps: IMatrixProps
 	private containerElement: HTMLDivElement
 	private matrixElement: HTMLDivElement
@@ -33,9 +35,11 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * Empty constructor.
 	 */
 	constructor() {
+		
 		this.dataSetElements = []
 		this.matrixProps = {
-			data: [],
+			rawData: [],
+			boxData: [],
 			context: this.context,
 			xAxisTitle: "X",
 			yAxisTitle: "Y"
@@ -56,10 +60,8 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	public init(context: ComponentFramework.Context < IInputs > , notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 		context.mode.trackContainerResize(true)
 		this.notifyOutputChanged = notifyOutputChanged
-
 		this.containerElement = document.createElement("div")
 		this.matrixElement = document.createElement("div")
-
 		this.containerElement.appendChild(this.matrixElement)
 		this.containerWidth = context.mode.allocatedWidth || 250
 		container.appendChild(this.containerElement)
@@ -76,7 +78,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 		this.containerWidth = context.mode.allocatedWidth
 
 		if (!context.parameters.Risks.loading) {
-
 			if (context.parameters.Risks.paging != null && context.parameters.Risks.paging.hasNextPage == true) {
 				context.parameters.Risks.paging.setPageSize(5000);
 				context.parameters.Risks.paging.loadNextPage();
@@ -84,7 +85,8 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 
 			this.getRecords(context.parameters.Risks)
 			this.matrixProps = {
-				data: this.initRiskArray(this.matrixSize, this.matrixSize),
+				rawData: this.dataSetElements,
+				boxData: this.initRiskArray(this.matrixSize, this.matrixSize),
 				context: this.context,
 				xAxisTitle: "Likelihood",
 				yAxisTitle: "Consequence"
@@ -101,9 +103,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 
 	}
 
-	private dataChanged(newDataset: []) {
-		this.notifyOutputChanged()
-	}
 
 	/** 
 	 * It is called by the framework prior to a control receiving new data. 
@@ -135,10 +134,7 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 				probability: probability,
 			})
 		}
-
-		this.matrixProps.data = this.dataSetElements
-
-
+		this.matrixProps.boxData = this.dataSetElements
 	}
 
 	private countRisks(x: number, y: number) {
@@ -154,9 +150,12 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 			arr[i] = []
 			for (let j = 0; j < x; j++) {
 				let col: string = this.calcRiskCategoryColour(i + 1, j + 1, this.lowThreshold, this.mediumThreshold)
+				let hoverCol: string = this.calcRiskCategoryHoverColour(i + 1, j + 1, this.lowThreshold, this.mediumThreshold)
+				let pressCol: string = this.calcRiskCategoryPressColour(i + 1, j + 1, this.lowThreshold, this.mediumThreshold)
 				arr[i][j] = {
 					colour: col,
-					hoverColour: "black",
+					hoverColour: hoverCol,
+					pressColour: pressCol,
 					count: this.countRisks(i + 1, j + 1),
 					xVal: j + 1,
 					yVal: i + 1
@@ -170,11 +169,39 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 		let risk: number = Math.round(x * y)
 		switch (true) {
 			case risk > mediumThreshold:
-				return "red"
+				return "#D11D26"
 			case risk > lowThreshold && risk <= mediumThreshold:
-				return "orange"
+				return "#FFBF00"
 			case risk <= lowThreshold:
-				return "green"
+				return "#238823"
+			default:
+				return "white"
+		}
+	}
+
+	private calcRiskCategoryHoverColour(x: number, y: number, lowThreshold: number, mediumThreshold: number): string {
+		let risk: number = Math.round(x * y)
+		switch (true) {
+			case risk > mediumThreshold:
+				return "#A7171F"
+			case risk > lowThreshold && risk <= mediumThreshold:
+				return "#D49F00"
+			case risk <= lowThreshold:
+				return "#1D6E1D"
+			default:
+				return "white"
+		}
+	}
+
+	private calcRiskCategoryPressColour(x: number, y: number, lowThreshold: number, mediumThreshold: number): string {
+		let risk: number = Math.round(x * y)
+		switch (true) {
+			case risk > mediumThreshold:
+				return "#520B0F"
+			case risk > lowThreshold && risk <= mediumThreshold:
+				return "#806000"
+			case risk <= lowThreshold:
+				return "#185C18"
 			default:
 				return "white"
 		}

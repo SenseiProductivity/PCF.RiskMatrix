@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.11",
+    "@types/xrm": "^9.0.18",
     "pcf-scripts": "^1",
     "pcf-start": "^1"
   }
