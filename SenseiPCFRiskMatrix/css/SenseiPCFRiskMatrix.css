@@ -6,7 +6,6 @@ li {
 
 .riskList {
     text-overflow: ellipsis;
-    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
 }
