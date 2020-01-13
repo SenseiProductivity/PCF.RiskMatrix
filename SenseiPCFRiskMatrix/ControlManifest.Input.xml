@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="ProjectIQ" constructor="SenseiPCFRiskMatrix" version="0.1.1" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
+  <control namespace="ProjectIQ" constructor="SenseiPCFRiskMatrix" version="0.1.2" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="Risks" display-name-key="Dataset_Display_Key">
       <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->

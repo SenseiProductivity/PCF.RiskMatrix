@@ -21,7 +21,6 @@ export interface IMatrixBoxState extends React.ComponentState {
 }
 
 export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState> {
-	Xrm: Xrm.XrmStatic
 
 	constructor(props: IMatrixBoxProps) {
 		
