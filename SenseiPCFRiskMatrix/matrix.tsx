@@ -1,98 +1,97 @@
-import * as React from 'react';
-import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox';
-import { IInputs } from './generated/ManifestTypes';
-import { RiskList, IRiskListProps, IRiskListState } from './riskList';
+import * as React from 'react'
+import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox'
+import { IInputs } from './generated/ManifestTypes'
+import { RiskList, IRiskListProps, IRiskListState } from './riskList'
 
 export interface RiskItem {
-	id: string;
-	name: string;
-	impact: number;
-	probability: number;
+	guid: string
+	id: number
+	name: string
+	impact: number
+	probability: number
 }
 
 export interface IMatrixProps {
-	rawData: RiskItem[];
-	boxData: IRiskBoxData[][];
-	context: ComponentFramework.Context<IInputs>;
-	xAxisTitle: string;
-	yAxisTitle: string;
+	rawData: RiskItem[]
+	boxData: IRiskBoxData[][]
+	context: ComponentFramework.Context<IInputs>
+	xAxisTitle: string
+	yAxisTitle: string
 }
 
 export interface IMatrixFilterState {
-	filterX?: number;
-	filterY?: number;
+	filterX?: number
+	filterY?: number
 }
 
 export interface IMatrixState extends React.ComponentState {
-	matrixBoxFilterState: IMatrixFilterState;
-	boxFilterData: RiskItem[];
+	matrixBoxFilterState: IMatrixFilterState
+	boxFilterData: RiskItem[]
 }
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
-	private MIN_SIZE: number = 250;
-	private MAX_SIZE: number = 500;
+	private MIN_SIZE: number = 250
+	private MAX_SIZE: number = 1300
+	private width: number
+	private height: number
 
 	constructor(props: IMatrixProps) {
-		super(props);
+		super(props)
 		this.state = {
 			boxFilterData: this.props.rawData,
 			matrixBoxFilterState: {}
-		};
+		}
+		
 	}
 
 	public render(): JSX.Element {
-		let width: number =
+		this.width =
 			this.props.context.mode.allocatedWidth == -1 || isNaN(this.props.context.mode.allocatedWidth)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedWidth > this.MAX_SIZE
 					? this.MAX_SIZE
-					: this.props.context.mode.allocatedWidth;
-		let height: number =
+					: this.props.context.mode.allocatedWidth
+					this.height =
 			this.props.context.mode.allocatedHeight == -1 || isNaN(this.props.context.mode.allocatedHeight)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedHeight > this.MAX_SIZE
 					? this.MAX_SIZE
-					: this.props.context.mode.allocatedHeight;
-
+					: this.props.context.mode.allocatedHeight
 		return (
-			<div>
-				<table style={{ paddingBottom: '100%', height: '100%', width: `${width}px` }}>
+			<div >
+				<table>
 					<tbody>
 						<tr>
-							<td>
+							<td style={{ width: `${this.width * 0.3}` }}>
 								<table>
 									<tbody>
 										<tr>
 											<td>
-												<table
-													style={{
-														height: `${width * 0.9}px`,
-														width: `${width * 0.1}px`,
-														tableLayout: 'fixed'
-													}}
-												>
+												<table>
 													<tbody>
 														<tr>
 															<td
 																style={{
 																	verticalAlign: 'middle',
 																	textAlign: 'center',
-																	paddingTop: '75px'
+																	paddingTop: '80px'
 																}}
 															>
 																<table
 																	style={{
-																		width: `${width / 20}px`,
-																		tableLayout: 'fixed'
+																		tableLayout: 'fixed',
+																		paddingTop:   '120px',
+																		width: '40px'
 																	}}
 																>
 																	<tbody>
 																		<tr>
 																			<td
 																				style={{
+																					width: '50px',
 																					verticalAlign: 'middle',
 																					textAlign: 'center',
-																					transform: 'rotate(270deg)'
+																					transform: 'rotate(270deg)',
 																				}}
 																			>
 																				{this.props.yAxisTitle.toString()}
@@ -103,16 +102,15 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 															</td>
 															<td
 																style={{
-																	height: '100%',
 																	verticalAlign: 'middle',
-																	textAlign: 'center'
+																	textAlign: 'center',
 																}}
 															>
 																<table
 																	style={{
-																		height: '100%',
-																		width: `${width / 20}px`,
-																		tableLayout: 'fixed'
+																		height: '248px',
+																		tableLayout: 'fixed',
+																		marginTop:   '44px',
 																	}}
 																>
 																	<tbody>
@@ -175,16 +173,14 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											</td>
 
 											<td>
-												<tr>
-													<td style={{ textAlign: 'center', width: `${width}px` }}>
+													<div style={{ textAlign: 'center', height: '40px'}}>
 														<h2>Risk Matrix</h2>
-													</td>
-												</tr>
+													</div>
 												<div
 													style={{
 														display: 'grid',
-														width: `${width * 0.9}px`,
-														height: `${width * 0.9}px`,
+														width: `${this.width * 0.3}`,
+														height: `${this.width * 0.3}`,
 														border: 'solid',
 														borderWidth: '2px',
 														borderColor: 'white'
@@ -196,14 +192,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											<td>
 												<div style={{ width: '20px' }} />
 											</td>
-											<td>
-												<RiskList risks={this.state.boxFilterData} />
-											</td>
+											
 										</tr>
 										<tr>
 											<td>&nbsp;</td>
 											<td>
-												<table style={{ width: `${width * 0.9}px` }}>
+												<table style={{ width: '250px' }}>
 													<tbody>
 														<tr>
 															<td style={{ width: '20%', textAlign: 'center' }}>1</td>
@@ -215,7 +209,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 													</tbody>
 												</table>
 
-												<div style={{ width: `${width * 0.9}px`, textAlign: 'center' }}>
+												<div style={{ textAlign: 'center' }}>
 													{this.props.xAxisTitle.toString()}
 												</div>
 											</td>
@@ -223,33 +217,47 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 									</tbody>
 								</table>
 							</td>
+							<td style={{ width: `${this.width * 0.7}px` }}>
+												<div style={{height: '40px'}}></div>
+												<div style={{
+														height: `${this.height}px`,
+														width: `${this.width * 0.7}px`,
+														overflow: 'auto' }}> <RiskList risks={this.state.boxFilterData} /> </div>
+												
+											
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-		);
+		)
 	}
 
 	private createGrid(): any[] {
-		let itemsY = [];
-		let itemsX = [];
+		let itemsY = []
+		let itemsX = []
 
 		for (let y = 5; y > 0; y--) {
-			itemsX = [];
+			itemsX = []
 			for (let x = 1; x <= 5; x++) {
 				itemsX.push(
 					<MatrixBox
+						
 						key={x.toString() + y.toString()}
 						riskData={this.props.boxData[y - 1][x - 1]}
 						matrixFilter={this.matrixBoxSelect}
 					/>
-				);
+				)
 			}
 
-			itemsY.push(<div key={'y_' + y.toString()}>{itemsX}</div>);
-		}
+			itemsY.push(<div 
+							key={'y_' + y.toString()} 
+							style={{
+								height: '50px',
+							}}
+						>{itemsX}</div>)}
 
-		return itemsY;
+		return itemsY
 	}
 
 	matrixBoxSelect = (matrixBoxFilter: IMatrixFilterState) => {
@@ -257,13 +265,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			matrixBoxFilterState: matrixBoxFilter,
 			boxFilterData: this.props.rawData.filter((risk) => {
 				if ((typeof(matrixBoxFilter.filterX) != "undefined") && (typeof(matrixBoxFilter.filterY) != "undefined")) {
-					return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY;
+					return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY
 				} 
 				else {
-					return risk;
+					return risk
 				}
 			})
-		});
-		// console.log('matrixBoxFilterState: X-' + matrixBoxFilter.filterX + ', Y-' + matrixBoxFilter.filterY);
-	};
+		})
+	}
 }

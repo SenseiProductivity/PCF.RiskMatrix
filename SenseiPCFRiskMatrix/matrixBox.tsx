@@ -35,8 +35,9 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 		return (
 			<div
 				style={{
-					height: '100%',
 					minHeight: '100%',
+					maxHeight: '100%',
+					height: '100%',
 					width: '20%',
 					display: 'inline-flex',
 					justifyContent: 'center',

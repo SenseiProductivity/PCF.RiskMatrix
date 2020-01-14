@@ -65,6 +65,10 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 		this.containerElement.appendChild(this.matrixElement)
 		this.containerWidth = context.mode.allocatedWidth || 250
 		container.appendChild(this.containerElement)
+		context.parameters.Risks.paging.setPageSize(5000);
+		if ( context.parameters.Risks.paging.hasNextPage == true) {
+			context.parameters.Risks.paging.loadNextPage();
+		}
 	}
 
 
@@ -78,11 +82,7 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 		this.containerWidth = context.mode.allocatedWidth
 
 		if (!context.parameters.Risks.loading) {
-			if (context.parameters.Risks.paging != null && context.parameters.Risks.paging.hasNextPage == true) {
-				context.parameters.Risks.paging.setPageSize(5000);
-				context.parameters.Risks.paging.loadNextPage();
-			}
-
+			
 			this.getRecords(context.parameters.Risks)
 			this.matrixProps = {
 				rawData: this.dataSetElements,
@@ -127,8 +127,10 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 			let probability = gridParam.records[currentRecordId].getFormattedValue("xAxisTitle")
 			let impact = gridParam.records[currentRecordId].getFormattedValue("yAxisTitle")
 			let name = gridParam.records[currentRecordId].getFormattedValue("riskName")
+			let ID = gridParam.records[currentRecordId].getFormattedValue("ID")
 			this.dataSetElements.push({
-				id: currentRecordId,
+				guid: gridParam.records[currentRecordId].getRecordId(),
+				id: ID,
 				name: name,
 				impact: impact,
 				probability: probability,

@@ -21,16 +21,8 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 
 	public render(): JSX.Element {
 		return (
-			<div
-				style={{
-					height: '100%',
-					width: '100%',
-					marginTop: '100px'
-				}}
-			>
 				<ul
 					style={{
-						height: '400px',
 						overflowY: 'auto',
 						overflowX: 'auto',
 						textAlign: 'left'
@@ -38,7 +30,7 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 				>
 					{this.props.risks.map((risk, riskIndex) => {
 							return (
-								<li key={risk.id}>
+								<li key={risk.guid}>
 									<h3 className={'riskList'}>
 										<b>{risk.id}</b> - {risk.name}
 									</h3>
@@ -46,7 +38,6 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 							)
 						})}
 				</ul>
-			</div>
 		)
 	}
 }
