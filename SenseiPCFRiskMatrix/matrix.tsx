@@ -2,6 +2,7 @@ import * as React from 'react'
 import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox'
 import { IInputs } from './generated/ManifestTypes'
 import { RiskList, IRiskListProps, IRiskListState } from './riskList'
+import { ResetFilterButton } from './resetFilterButton'
 
 export interface RiskItem {
 	guid: string
@@ -19,14 +20,16 @@ export interface IMatrixProps {
 	yAxisTitle: string
 }
 
-export interface IMatrixFilterState {
+export interface IMatrixBoxContext {
 	filterX?: number
 	filterY?: number
 }
 
 export interface IMatrixState extends React.ComponentState {
-	matrixBoxFilterState: IMatrixFilterState
+	matrixBoxFilterState: IMatrixBoxContext
 	boxFilterData: RiskItem[]
+	filterResetButtonVisible: boolean
+	lastSelectedFilter: IMatrixBoxContext
 }
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
@@ -38,8 +41,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	constructor(props: IMatrixProps) {
 		super(props)
 		this.state = {
+			matrixBoxFilterState: {},
+			lastSelectedFilter: {},
 			boxFilterData: this.props.rawData,
-			matrixBoxFilterState: {}
+			filterResetButtonVisible: false,
 		}
 		
 	}
@@ -195,7 +200,8 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											
 										</tr>
 										<tr>
-											<td>&nbsp;</td>
+											<td><ResetFilterButton visible={this.state.filterResetButtonVisible}
+																	hideClearFilterButton={this.hideClearFilterButton}></ResetFilterButton></td>
 											<td>
 												<table style={{ width: '250px' }}>
 													<tbody>
@@ -260,17 +266,33 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		return itemsY
 	}
 
-	matrixBoxSelect = (matrixBoxFilter: IMatrixFilterState) => {
-		this.setState({
-			matrixBoxFilterState: matrixBoxFilter,
-			boxFilterData: this.props.rawData.filter((risk) => {
-				if ((typeof(matrixBoxFilter.filterX) != "undefined") && (typeof(matrixBoxFilter.filterY) != "undefined")) {
-					return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY
-				} 
-				else {
-					return risk
-				}
+	matrixBoxSelect = (matrixBoxFilter: IMatrixBoxContext) => {
+		if(this.state.lastSelectedFilter.filterX === matrixBoxFilter.filterX && this.state.lastSelectedFilter.filterY === matrixBoxFilter.filterY) {
+			this.setState({
+				filterResetButtonVisible: false,
+				matrixBoxFilterState: {},
+				lastSelectedFilter: {},
+				boxFilterData: this.props.rawData})
+		} else {
+			this.setState({
+				filterResetButtonVisible: true,
+				matrixBoxFilterState: matrixBoxFilter,
+				lastSelectedFilter: matrixBoxFilter,
+				boxFilterData: this.props.rawData.filter((risk) => {
+					if ((typeof(matrixBoxFilter.filterX) != "undefined") && (typeof(matrixBoxFilter.filterY) != "undefined")) {
+						return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY
+					} 
+					else {
+						return risk
+					}
+				})
 			})
-		})
+		}
+		
+	}
+
+	hideClearFilterButton = () => {
+		this.setState({filterResetButtonVisible: false,
+			boxFilterData: this.props.rawData})
 	}
 }

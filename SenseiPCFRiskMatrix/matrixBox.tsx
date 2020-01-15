@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IMatrixFilterState } from "./matrix";
+import { IMatrixBoxContext } from './matrix'
 
 export interface IRiskBoxData {
 	count: number
@@ -11,23 +11,22 @@ export interface IRiskBoxData {
 }
 
 export interface IMatrixBoxProps {
-	riskData: IRiskBoxData,
+	riskData: IRiskBoxData
 	matrixFilter: any
 }
 
 export interface IMatrixBoxState extends React.ComponentState {
 	boxFillColour: string
-	
+	selected: boolean
 }
 
 export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState> {
-
 	constructor(props: IMatrixBoxProps) {
-		
 		super(props)
 
 		this.state = {
 			boxFillColour: this.props.riskData.colour,
+			selected: false
 		}
 	}
 
@@ -52,36 +51,43 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 					color: 'white',
 					backgroundColor: this.state.boxFillColour
 				}}
-				onMouseDown = {() => this.handleMouseDown()}
-				onMouseOver = {() => this.handleMouseOver()}
-				onMouseLeave = {() => this.handleMouseLeave()}
-				onMouseUp = {() => this.handleMouseLeave()}
+				onMouseDown={() => this.handleMouseDown()}
+				onMouseOver={() => this.handleMouseOver()}
+				onMouseLeave={() => this.handleMouseLeave()}
+				onMouseUp={() => this.handleMouseLeave()}
 			>
-				<h2 style={{ color: this.props.riskData.count == 0 ? 'transparent' : 'white' }}>{this.props.riskData.count.toString()}</h2>
+				<h2 style={{ color: this.props.riskData.count == 0 ? 'transparent' : 'white' }}>
+					{this.props.riskData.count.toString()}
+				</h2>
 			</div>
 		)
 	}
-	
-	private handleMouseDown()  {
-		this.setState({boxFillColour: this.props.riskData.pressColour})
-		this.applySubgridFilter(this.props.riskData.xVal,this.props.riskData.yVal)
+
+	private handleMouseDown() {
+		if (this.state.selected) {
+			this.setState({ boxFillColour: this.props.riskData.pressColour, selected: false })
+		} else {
+			this.setState({ boxFillColour: this.props.riskData.pressColour, selected: true })
+		}
+		this.applySubgridFilter(this.props.riskData.xVal, this.props.riskData.yVal)
 	}
-	
+
 	private handleMouseOver() {
-		this.setState({boxFillColour: this.props.riskData.hoverColour})
+		this.setState({ boxFillColour: this.props.riskData.hoverColour })
 	}
 
 	private handleMouseLeave() {
-		this.setState({boxFillColour: this.props.riskData.colour})
+		if (this.state.selected) {
+			this.setState({ boxFillColour: this.props.riskData.hoverColour })
+		} else {
+			this.setState({ boxFillColour: this.props.riskData.colour })
+		}
 	}
 
 	applySubgridFilter = (xFilterVal: number, yFilterVal: number) => {
 		this.props.matrixFilter({
 			filterX: xFilterVal,
 			filterY: yFilterVal
-		});
-   }
-
+		})
 	}
-
-
+}
