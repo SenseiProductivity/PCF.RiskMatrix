@@ -46,7 +46,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			boxFilterData: this.props.rawData,
 			filterResetButtonVisible: false,
 		}
-		
 	}
 
 	public render(): JSX.Element {
@@ -56,7 +55,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				: this.props.context.mode.allocatedWidth > this.MAX_SIZE
 					? this.MAX_SIZE
 					: this.props.context.mode.allocatedWidth
-					this.height =
+		this.height =
 			this.props.context.mode.allocatedHeight == -1 || isNaN(this.props.context.mode.allocatedHeight)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedHeight > this.MAX_SIZE
@@ -67,7 +66,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				<table>
 					<tbody>
 						<tr>
-							<td style={{ width: `${this.width * 0.3}` }}>
+							<td>
 								<table>
 									<tbody>
 										<tr>
@@ -99,8 +98,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 																					transform: 'rotate(270deg)',
 																				}}
 																			>
-																				{this.props.yAxisTitle.toString()}
-																			</td>
+																				{this.props.yAxisTitle.toString()}</td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -120,54 +118,19 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 																>
 																	<tbody>
 																		<tr>
-																			<td
-																				style={{
-																					verticalAlign: 'middle',
-																					textAlign: 'center'
-																				}}
-																			>
-																				5
-																			</td>
+																			<td className={'yAxisLabel'}>5</td>
 																		</tr>
 																		<tr>
-																			<td
-																				style={{
-																					verticalAlign: 'middle',
-																					textAlign: 'center'
-																				}}
-																			>
-																				4
-																			</td>
+																			<td className={'yAxisLabel'}>4</td>
 																		</tr>
 																		<tr>
-																			<td
-																				style={{
-																					verticalAlign: 'middle',
-																					textAlign: 'center'
-																				}}
-																			>
-																				3
-																			</td>
+																			<td className={'yAxisLabel'}>3</td>
 																		</tr>
 																		<tr>
-																			<td
-																				style={{
-																					verticalAlign: 'middle',
-																					textAlign: 'center'
-																				}}
-																			>
-																				2
-																			</td>
+																			<td className={'yAxisLabel'}>2</td>
 																		</tr>
 																		<tr>
-																			<td
-																				style={{
-																					verticalAlign: 'middle',
-																					textAlign: 'center'
-																				}}
-																			>
-																				1
-																			</td>
+																			<td className={'yAxisLabel'}>1</td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -184,8 +147,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 												<div
 													style={{
 														display: 'grid',
-														width: `${this.width * 0.3}`,
-														height: `${this.width * 0.3}`,
 														border: 'solid',
 														borderWidth: '2px',
 														borderColor: 'white'

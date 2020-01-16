@@ -16,16 +16,13 @@ import {
 type DataSet = ComponentFramework.PropertyTypes.DataSet
 
 
-export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl < IInputs, IOutputs > {
+export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
-	private context: ComponentFramework.Context < IInputs >
-	private notifyOutputChanged: () => void
+	private context: ComponentFramework.Context<IInputs>
 	private matrixProps: IMatrixProps
 	private containerElement: HTMLDivElement
 	private matrixElement: HTMLDivElement
 	private dataSetElements: any[]
-	private containerHeight: number
-	private containerWidth: number
 	private lowThreshold: number
 	private mediumThreshold: number
 	private matrixSize: number
@@ -35,7 +32,7 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * Empty constructor.
 	 */
 	constructor() {
-		
+
 		this.dataSetElements = []
 		this.matrixProps = {
 			rawData: [],
@@ -57,16 +54,14 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
 	 */
-	public init(context: ComponentFramework.Context < IInputs > , notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
+	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 		context.mode.trackContainerResize(true)
-		this.notifyOutputChanged = notifyOutputChanged
 		this.containerElement = document.createElement("div")
 		this.matrixElement = document.createElement("div")
 		this.containerElement.appendChild(this.matrixElement)
-		this.containerWidth = context.mode.allocatedWidth || 250
 		container.appendChild(this.containerElement)
 		context.parameters.Risks.paging.setPageSize(5000);
-		if ( context.parameters.Risks.paging.hasNextPage == true) {
+		if (context.parameters.Risks.paging.hasNextPage == true) {
 			context.parameters.Risks.paging.loadNextPage();
 		}
 	}
@@ -76,13 +71,11 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl <
 	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
 	 * @param context The entire property bag available to control via Context Object It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
 	 */
-	public updateView(context: ComponentFramework.Context < IInputs > ): void {
+	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		this.context = context
-		this.containerHeight = context.mode.allocatedHeight
-		this.containerWidth = context.mode.allocatedWidth
 
 		if (!context.parameters.Risks.loading) {
-			
+
 			this.getRecords(context.parameters.Risks)
 			this.matrixProps = {
 				rawData: this.dataSetElements,

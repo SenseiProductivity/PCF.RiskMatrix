@@ -9,3 +9,8 @@ li {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.yAxisLabel {
+    vertical-align: middle;
+	text-align: center;
+}
