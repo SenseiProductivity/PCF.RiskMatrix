@@ -14,10 +14,6 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 
 		this.state = {}
     }
-    
-    // public handleUpdate = () => {
-    //     this.forceUpdate()
-    //   }
 
 	public render(): JSX.Element {
 		return (
@@ -28,16 +24,20 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 						textAlign: 'left'
 					}}
 				>
-					{this.props.risks.map((risk, riskIndex) => {
-							return (
-								<li key={risk.guid}>
-									<h3 className={'riskList'}>
-										<b>{risk.id}</b> - {risk.name}
-									</h3>
-								</li>
-							)
-						})}
+					{this.buildList()}
 				</ul>
 		)
+	}
+
+	private buildList() {
+		return this.props.risks.map((risk, riskIndex) => {
+			return (
+				<li key={risk.guid}>
+					<h3 className={'riskList'}>
+						<b>{risk.id}</b> - {risk.name}
+					</h3>
+				</li>
+			)
+		})
 	}
 }

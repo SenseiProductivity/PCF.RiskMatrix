@@ -20,16 +20,16 @@ export interface IMatrixProps {
 	yAxisTitle: string
 }
 
-export interface IMatrixBoxContext {
+export interface IMatrixBoxFilter {
 	filterX?: number
 	filterY?: number
 }
 
 export interface IMatrixState extends React.ComponentState {
-	matrixBoxFilterState: IMatrixBoxContext
+	matrixBoxFilterState: IMatrixBoxFilter
 	boxFilterData: RiskItem[]
 	filterResetButtonVisible: boolean
-	lastSelectedFilter: IMatrixBoxContext
+	lastSelectedFilter: IMatrixBoxFilter
 }
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
@@ -209,10 +209,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			for (let x = 1; x <= 5; x++) {
 				itemsX.push(
 					<MatrixBox
-						
 						key={x.toString() + y.toString()}
 						riskData={this.props.boxData[y - 1][x - 1]}
 						matrixFilter={this.matrixBoxSelect}
+						selectedFilter={this.state.matrixBoxFilterState}
 					/>
 				)
 			}
@@ -227,7 +227,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		return itemsY
 	}
 
-	matrixBoxSelect = (matrixBoxFilter: IMatrixBoxContext) => {
+	matrixBoxSelect = (matrixBoxFilter: IMatrixBoxFilter) => {
 		if(this.state.lastSelectedFilter.filterX === matrixBoxFilter.filterX && this.state.lastSelectedFilter.filterY === matrixBoxFilter.filterY) {
 			this.setState({
 				filterResetButtonVisible: false,

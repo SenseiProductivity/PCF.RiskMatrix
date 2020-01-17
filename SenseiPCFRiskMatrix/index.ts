@@ -129,7 +129,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 				probability: probability,
 			})
 		}
-		this.matrixProps.boxData = this.dataSetElements
 	}
 
 	private countRisks(x: number, y: number) {

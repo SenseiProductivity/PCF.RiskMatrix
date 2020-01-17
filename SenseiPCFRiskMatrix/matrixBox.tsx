@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IMatrixBoxContext } from './matrix'
+import { IMatrixBoxFilter } from './matrix'
 
 export interface IRiskBoxData {
 	count: number
@@ -13,6 +13,7 @@ export interface IRiskBoxData {
 export interface IMatrixBoxProps {
 	riskData: IRiskBoxData
 	matrixFilter: any
+	selectedFilter: IMatrixBoxFilter
 }
 
 export interface IMatrixBoxState extends React.ComponentState {
@@ -49,7 +50,11 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 					borderWidth: '1px',
 					borderColor: 'white',
 					color: 'white',
-					backgroundColor: this.state.boxFillColour
+					backgroundColor:
+						this.props.selectedFilter.filterX == this.props.riskData.xVal &&
+						this.props.selectedFilter.filterY == this.props.riskData.yVal
+							? this.state.selected ? this.props.riskData.pressColour : this.props.riskData.hoverColour
+							: this.state.boxFillColour
 				}}
 				onMouseDown={() => this.handleMouseDown()}
 				onMouseOver={() => this.handleMouseOver()}
@@ -64,11 +69,7 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 	}
 
 	private handleMouseDown() {
-		if (this.state.selected) {
-			this.setState({ boxFillColour: this.props.riskData.pressColour, selected: false })
-		} else {
-			this.setState({ boxFillColour: this.props.riskData.pressColour, selected: true })
-		}
+		this.setState({ boxFillColour: this.props.riskData.pressColour, selected: true })
 		this.applySubgridFilter(this.props.riskData.xVal, this.props.riskData.yVal)
 	}
 
@@ -77,11 +78,7 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 	}
 
 	private handleMouseLeave() {
-		if (this.state.selected) {
-			this.setState({ boxFillColour: this.props.riskData.hoverColour })
-		} else {
-			this.setState({ boxFillColour: this.props.riskData.colour })
-		}
+		this.setState({ boxFillColour: this.props.riskData.colour, selected: false })
 	}
 
 	applySubgridFilter = (xFilterVal: number, yFilterVal: number) => {
