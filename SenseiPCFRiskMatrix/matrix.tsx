@@ -253,7 +253,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	}
 
 	hideClearFilterButton = () => {
-		this.setState({filterResetButtonVisible: false,
-			boxFilterData: this.props.rawData})
+		this.setState({
+			filterResetButtonVisible: false,
+			matrixBoxFilterState: {},
+			lastSelectedFilter: {},
+			boxFilterData: this.props.rawData,
+
+		})
 	}
 }
