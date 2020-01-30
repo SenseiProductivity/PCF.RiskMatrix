@@ -6,7 +6,8 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import {
 	Matrix,
-	IMatrixProps
+	IMatrixProps,
+	RiskItem
 } from "./matrix"
 import {
 	IRiskBoxData
@@ -22,7 +23,7 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 	private matrixProps: IMatrixProps
 	private containerElement: HTMLDivElement
 	private matrixElement: HTMLDivElement
-	private dataSetElements: any[]
+	private dataSetElements: RiskItem[]
 	private lowThreshold: number
 	private mediumThreshold: number
 	private matrixSize: number
@@ -117,23 +118,19 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 	private getRecords(gridParam: DataSet): void {
 		this.dataSetElements = []
 		for (let currentRecordId of gridParam.sortedRecordIds) {
-			let probability = gridParam.records[currentRecordId].getFormattedValue("xAxisTitle")
-			let impact = gridParam.records[currentRecordId].getFormattedValue("yAxisTitle")
-			let name = gridParam.records[currentRecordId].getFormattedValue("riskName")
-			let ID = gridParam.records[currentRecordId].getFormattedValue("ID")
 			this.dataSetElements.push({
 				guid: gridParam.records[currentRecordId].getRecordId(),
-				id: ID,
-				name: name,
-				impact: impact,
-				probability: probability,
+				id: +gridParam.records[currentRecordId].getFormattedValue("ID"),
+				name: gridParam.records[currentRecordId].getFormattedValue("riskName"),
+				impact: +gridParam.records[currentRecordId].getFormattedValue("yAxisTitle"),
+				probability:  +gridParam.records[currentRecordId].getFormattedValue("xAxisTitle"),
 			})
 		}
 	}
 
 	private countRisks(x: number, y: number) {
 		let count = this.dataSetElements.filter((e) => {
-			return e.impact == x && e.probability == y
+			return +e.impact == x && +e.probability == y
 		}).length
 		return count
 	}

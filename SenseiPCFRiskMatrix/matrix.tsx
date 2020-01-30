@@ -37,6 +37,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	private MAX_SIZE: number = 1300
 	private width: number
 	private height: number
+	private boxFilterData: RiskItem[]
 
 	constructor(props: IMatrixProps) {
 		super(props)
@@ -44,11 +45,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			matrixBoxFilterState: {},
 			lastSelectedFilter: {},
 			boxFilterData: this.props.rawData,
-			filterResetButtonVisible: false,
+			filterResetButtonVisible: false
 		}
 	}
 
 	public render(): JSX.Element {
+		this.boxFilterData = this.state.boxFilterData
 		this.width =
 			this.props.context.mode.allocatedWidth == -1 || isNaN(this.props.context.mode.allocatedWidth)
 				? this.MIN_SIZE
@@ -61,8 +63,16 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				: this.props.context.mode.allocatedHeight > this.MAX_SIZE
 					? this.MAX_SIZE
 					: this.props.context.mode.allocatedHeight
+
+		const renderList = () => {
+			if (this.width > 799) {
+				return <RiskList risks={this.boxFilterData} />
+			} else {
+				return <div />
+			}
+		}
 		return (
-			<div >
+			<div>
 				<table>
 					<tbody>
 						<tr>
@@ -84,7 +94,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 																<table
 																	style={{
 																		tableLayout: 'fixed',
-																		paddingTop:   '120px',
+																		paddingTop: '120px',
 																		width: '40px'
 																	}}
 																>
@@ -95,10 +105,11 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 																					width: '50px',
 																					verticalAlign: 'middle',
 																					textAlign: 'center',
-																					transform: 'rotate(270deg)',
+																					transform: 'rotate(270deg)'
 																				}}
 																			>
-																				{this.props.yAxisTitle.toString()}</td>
+																				{this.props.yAxisTitle.toString()}
+																			</td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -106,14 +117,14 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 															<td
 																style={{
 																	verticalAlign: 'middle',
-																	textAlign: 'center',
+																	textAlign: 'center'
 																}}
 															>
 																<table
 																	style={{
 																		height: '248px',
 																		tableLayout: 'fixed',
-																		marginTop:   '44px',
+																		marginTop: '44px'
 																	}}
 																>
 																	<tbody>
@@ -141,9 +152,9 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											</td>
 
 											<td>
-													<div style={{ textAlign: 'center', height: '40px'}}>
-														<h2>Risk Matrix</h2>
-													</div>
+												<div style={{ textAlign: 'center', height: '40px' }}>
+													<h2>Risk Matrix</h2>
+												</div>
 												<div
 													style={{
 														display: 'grid',
@@ -158,11 +169,14 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											<td>
 												<div style={{ width: '20px' }} />
 											</td>
-											
 										</tr>
 										<tr>
-											<td><ResetFilterButton visible={this.state.filterResetButtonVisible}
-																	hideClearFilterButton={this.hideClearFilterButton}></ResetFilterButton></td>
+											<td>
+												<ResetFilterButton
+													visible={this.state.filterResetButtonVisible}
+													hideClearFilterButton={this.hideClearFilterButton}
+												/>
+											</td>
 											<td>
 												<table style={{ width: '250px' }}>
 													<tbody>
@@ -185,13 +199,16 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 								</table>
 							</td>
 							<td style={{ width: `${this.width * 0.7}px` }}>
-												<div style={{height: '40px'}}></div>
-												<div style={{
-														height: `${this.height}px`,
-														width: `${this.width * 0.7}px`,
-														overflow: 'auto' }}> <RiskList risks={this.state.boxFilterData} /> </div>
-												
-											
+								<div style={{ height: '40px' }} />
+								<div
+									style={{
+										height: `${this.height}px`,
+										width: `${this.width * 0.7}px`,
+										overflow: 'auto'
+									}}
+								>
+									{renderList()}
+								</div>
 							</td>
 						</tr>
 					</tbody>
@@ -217,39 +234,49 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				)
 			}
 
-			itemsY.push(<div 
-							key={'y_' + y.toString()} 
-							style={{
-								height: '50px',
-							}}
-						>{itemsX}</div>)}
+			itemsY.push(
+				<div
+					key={'y_' + y.toString()}
+					style={{
+						height: '50px'
+					}}
+				>
+					{itemsX}
+				</div>
+			)
+		}
 
 		return itemsY
 	}
 
 	matrixBoxSelect = (matrixBoxFilter: IMatrixBoxFilter) => {
-		if(this.state.lastSelectedFilter.filterX === matrixBoxFilter.filterX && this.state.lastSelectedFilter.filterY === matrixBoxFilter.filterY) {
+		if (
+			this.state.lastSelectedFilter.filterX === matrixBoxFilter.filterX &&
+			this.state.lastSelectedFilter.filterY === matrixBoxFilter.filterY
+		) {
 			this.setState({
 				filterResetButtonVisible: false,
 				matrixBoxFilterState: {},
 				lastSelectedFilter: {},
-				boxFilterData: this.props.rawData})
+				boxFilterData: this.props.rawData
+			})
 		} else {
 			this.setState({
 				filterResetButtonVisible: true,
 				matrixBoxFilterState: matrixBoxFilter,
 				lastSelectedFilter: matrixBoxFilter,
 				boxFilterData: this.props.rawData.filter((risk) => {
-					if ((typeof(matrixBoxFilter.filterX) != "undefined") && (typeof(matrixBoxFilter.filterY) != "undefined")) {
+					if (
+						typeof matrixBoxFilter.filterX != 'undefined' &&
+						typeof matrixBoxFilter.filterY != 'undefined'
+					) {
 						return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY
-					} 
-					else {
+					} else {
 						return risk
 					}
 				})
 			})
 		}
-		
 	}
 
 	hideClearFilterButton = () => {
@@ -257,8 +284,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			filterResetButtonVisible: false,
 			matrixBoxFilterState: {},
 			lastSelectedFilter: {},
-			boxFilterData: this.props.rawData,
-
+			boxFilterData: this.props.rawData
 		})
 	}
 }
