@@ -34,22 +34,8 @@ export class MatrixBox extends React.Component<IMatrixBoxProps, IMatrixBoxState>
 	public render(): JSX.Element {
 		return (
 			<div
+				className={'matrixBox'}
 				style={{
-					minHeight: '100%',
-					maxHeight: '100%',
-					height: '100%',
-					width: '20%',
-					display: 'inline-flex',
-					justifyContent: 'center',
-					position: 'relative',
-					alignItems: 'center',
-					top: '50%',
-					transform: 'translateY(-50%)',
-					border: 'solid',
-					boxSizing: 'border-box',
-					borderWidth: '1px',
-					borderColor: 'white',
-					color: 'white',
 					backgroundColor:
 						this.props.selectedFilter.filterX == this.props.riskData.xVal &&
 						this.props.selectedFilter.filterY == this.props.riskData.yVal

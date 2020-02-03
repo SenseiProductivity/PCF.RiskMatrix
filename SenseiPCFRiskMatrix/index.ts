@@ -76,7 +76,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 		this.context = context
 
 		if (!context.parameters.Risks.loading) {
-
 			this.getRecords(context.parameters.Risks)
 			this.matrixProps = {
 				rawData: this.dataSetElements,
@@ -85,7 +84,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 				xAxisTitle: "Likelihood",
 				yAxisTitle: "Consequence"
 			}
-
 			ReactDOM.render(
 				React.createElement(
 					Matrix,

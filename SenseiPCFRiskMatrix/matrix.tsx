@@ -181,11 +181,11 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 												<table style={{ width: '250px' }}>
 													<tbody>
 														<tr>
-															<td style={{ width: '20%', textAlign: 'center' }}>1</td>
-															<td style={{ width: '20%', textAlign: 'center' }}>2</td>
-															<td style={{ width: '20%', textAlign: 'center' }}>3</td>
-															<td style={{ width: '20%', textAlign: 'center' }}>4</td>
-															<td style={{ width: '20%', textAlign: 'center' }}>5</td>
+															<td className={'xAxisLabel'}>1</td>
+															<td className={'xAxisLabel'}>2</td>
+															<td className={'xAxisLabel'}>3</td>
+															<td className={'xAxisLabel'}>4</td>
+															<td className={'xAxisLabel'}>5</td>
 														</tr>
 													</tbody>
 												</table>

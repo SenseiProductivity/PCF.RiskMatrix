@@ -3,7 +3,6 @@ import { RiskItem } from './matrix'
 
 export interface IRiskListProps {
 	risks: RiskItem[]
-	//listUpdate: () => void
 }
 
 export interface IRiskListState extends React.ComponentState {}
@@ -17,7 +16,7 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 
 	public render(): JSX.Element {
 		return (
-				<ul
+				<ul className={'riskList'}
 					style={{
 						overflowY: 'auto',
 						overflowX: 'auto',
@@ -33,7 +32,7 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 		return this.props.risks.map((risk, riskIndex) => {
 			return (
 				<li key={risk.guid}>
-					<h3 className={'riskList'}>
+					<h3 className={'RowText'}>
 						<b>{risk.id}</b> - {risk.name}
 					</h3>
 				</li>
