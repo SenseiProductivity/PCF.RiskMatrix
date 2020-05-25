@@ -1,31 +1,32 @@
-import * as React from 'react'
-import { RiskItem } from './matrix'
+import * as React from 'react';
+import { RiskItem } from './matrix';
 
 export interface IRiskListProps {
-	risks: RiskItem[]
+	risks: RiskItem[];
 }
 
 export interface IRiskListState extends React.ComponentState {}
 
 export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 	constructor(props: IRiskListProps) {
-		super(props)
+		super(props);
 
-		this.state = {}
-    }
+		this.state = {};
+	}
 
 	public render(): JSX.Element {
 		return (
-				<ul className={'riskList'}
-					style={{
-						overflowY: 'auto',
-						overflowX: 'auto',
-						textAlign: 'left'
-					}}
-				>
-					{this.buildList()}
-				</ul>
-		)
+			<ul
+				className={'riskList'}
+				style={{
+					overflowY: 'auto',
+					overflowX: 'auto',
+					textAlign: 'left'
+				}}
+			>
+				{this.buildList()}
+			</ul>
+		);
 	}
 
 	private buildList() {
@@ -36,7 +37,7 @@ export class RiskList extends React.Component<IRiskListProps, IRiskListState> {
 						<b>{risk.id}</b> - {risk.name}
 					</h3>
 				</li>
-			)
-		})
+			);
+		});
 	}
 }

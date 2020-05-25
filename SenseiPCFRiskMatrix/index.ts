@@ -27,8 +27,6 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 	private lowThreshold: number
 	private mediumThreshold: number
 	private matrixSize: number
-
-
 	/**
 	 * Empty constructor.
 	 */
@@ -121,7 +119,7 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 				id: +gridParam.records[currentRecordId].getFormattedValue("ID"),
 				name: gridParam.records[currentRecordId].getFormattedValue("riskName"),
 				impact: +gridParam.records[currentRecordId].getFormattedValue("yAxisTitle"),
-				probability:  +gridParam.records[currentRecordId].getFormattedValue("xAxisTitle"),
+				probability: +gridParam.records[currentRecordId].getFormattedValue("xAxisTitle"),
 			})
 		}
 	}

@@ -1,76 +1,76 @@
-import * as React from 'react'
-import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox'
-import { IInputs } from './generated/ManifestTypes'
-import { RiskList, IRiskListProps, IRiskListState } from './riskList'
-import { ResetFilterButton } from './resetFilterButton'
+import * as React from 'react';
+import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox';
+import { IInputs } from './generated/ManifestTypes';
+import { RiskList, IRiskListProps, IRiskListState } from './riskList';
+import { ResetFilterButton } from './resetFilterButton';
 
 export interface RiskItem {
-	guid: string
-	id: number
-	name: string
-	impact: number
-	probability: number
+	guid: string;
+	id: number;
+	name: string;
+	impact: number;
+	probability: number;
 }
 
 export interface IMatrixProps {
-	rawData: RiskItem[]
-	boxData: IRiskBoxData[][]
-	context: ComponentFramework.Context<IInputs>
-	xAxisTitle: string
-	yAxisTitle: string
+	rawData: RiskItem[];
+	boxData: IRiskBoxData[][];
+	context: ComponentFramework.Context<IInputs>;
+	xAxisTitle: string;
+	yAxisTitle: string;
 }
 
 export interface IMatrixBoxFilter {
-	filterX?: number
-	filterY?: number
+	filterX?: number;
+	filterY?: number;
 }
 
 export interface IMatrixState extends React.ComponentState {
-	matrixBoxFilterState: IMatrixBoxFilter
-	boxFilterData: RiskItem[]
-	filterResetButtonVisible: boolean
-	lastSelectedFilter: IMatrixBoxFilter
+	matrixBoxFilterState: IMatrixBoxFilter;
+	boxFilterData: RiskItem[];
+	filterResetButtonVisible: boolean;
+	lastSelectedFilter: IMatrixBoxFilter;
 }
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
-	private MIN_SIZE: number = 250
-	private MAX_SIZE: number = 1300
-	private width: number
-	private height: number
-	private boxFilterData: RiskItem[]
+	private MIN_SIZE: number = 250;
+	private MAX_SIZE: number = 1300;
+	private width: number;
+	private height: number;
+	private boxFilterData: RiskItem[];
 
 	constructor(props: IMatrixProps) {
-		super(props)
+		super(props);
 		this.state = {
 			matrixBoxFilterState: {},
 			lastSelectedFilter: {},
 			boxFilterData: this.props.rawData,
 			filterResetButtonVisible: false
-		}
+		};
 	}
 
 	public render(): JSX.Element {
-		this.boxFilterData = this.state.boxFilterData
+		this.boxFilterData = this.state.boxFilterData;
 		this.width =
 			this.props.context.mode.allocatedWidth == -1 || isNaN(this.props.context.mode.allocatedWidth)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedWidth > this.MAX_SIZE
 					? this.MAX_SIZE
-					: this.props.context.mode.allocatedWidth
+					: this.props.context.mode.allocatedWidth;
 		this.height =
 			this.props.context.mode.allocatedHeight == -1 || isNaN(this.props.context.mode.allocatedHeight)
 				? this.MIN_SIZE
 				: this.props.context.mode.allocatedHeight > this.MAX_SIZE
 					? this.MAX_SIZE
-					: this.props.context.mode.allocatedHeight
+					: this.props.context.mode.allocatedHeight;
 
-		const renderList = () => {
+		const renderList = (): JSX.Element => {
 			if (this.width > 799) {
-				return <RiskList risks={this.boxFilterData} />
+				return <RiskList risks={this.boxFilterData} />;
 			} else {
-				return <div />
+				return <div />;
 			}
-		}
+		};
 		return (
 			<div>
 				<table>
@@ -214,15 +214,15 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 					</tbody>
 				</table>
 			</div>
-		)
+		);
 	}
 
 	private createGrid(): any[] {
-		let itemsY = []
-		let itemsX = []
+		let itemsY = [];
+		let itemsX = [];
 
 		for (let y = 5; y > 0; y--) {
-			itemsX = []
+			itemsX = [];
 			for (let x = 1; x <= 5; x++) {
 				itemsX.push(
 					<MatrixBox
@@ -231,7 +231,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 						matrixFilter={this.matrixBoxSelect}
 						selectedFilter={this.state.matrixBoxFilterState}
 					/>
-				)
+				);
 			}
 
 			itemsY.push(
@@ -243,10 +243,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				>
 					{itemsX}
 				</div>
-			)
+			);
 		}
 
-		return itemsY
+		return itemsY;
 	}
 
 	matrixBoxSelect = (matrixBoxFilter: IMatrixBoxFilter) => {
@@ -259,7 +259,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				matrixBoxFilterState: {},
 				lastSelectedFilter: {},
 				boxFilterData: this.props.rawData
-			})
+			});
 		} else {
 			this.setState({
 				filterResetButtonVisible: true,
@@ -270,14 +270,14 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 						typeof matrixBoxFilter.filterX != 'undefined' &&
 						typeof matrixBoxFilter.filterY != 'undefined'
 					) {
-						return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY
+						return risk.probability == matrixBoxFilter.filterX && risk.impact == matrixBoxFilter.filterY;
 					} else {
-						return risk
+						return risk;
 					}
 				})
-			})
+			});
 		}
-	}
+	};
 
 	hideClearFilterButton = () => {
 		this.setState({
@@ -285,6 +285,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			matrixBoxFilterState: {},
 			lastSelectedFilter: {},
 			boxFilterData: this.props.rawData
-		})
-	}
+		});
+	};
 }
