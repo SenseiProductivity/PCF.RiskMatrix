@@ -11,7 +11,7 @@ import { AppConfig } from "./AppConfig"
 type DataSet = ComponentFramework.PropertyTypes.DataSet
 
 
-export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class RiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private config: Config;
 	private settingsService: SettingsService;
