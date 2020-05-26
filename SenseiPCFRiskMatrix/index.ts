@@ -1,17 +1,11 @@
-import {
-	IInputs,
-	IOutputs
-} from "./generated/ManifestTypes"
+import { IInputs, IOutputs } from "./generated/ManifestTypes"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import {
-	Matrix,
-	IMatrixProps,
-	RiskItem
-} from "./matrix"
-import {
-	IRiskBoxData
-} from "./matrixBox"
+import { Matrix, IMatrixProps, RiskItem } from "./components/matrix"
+import { IRiskBoxData } from "./components/matrixBox"
+import { SettingsService } from "../../_common/services/SettingsService";
+import { Config } from "./models/config";
+import { AppConfig } from "./AppConfig"
 
 
 type DataSet = ComponentFramework.PropertyTypes.DataSet
@@ -19,6 +13,8 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet
 
 export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
+	private config: Config;
+	private settingsService: SettingsService;
 	private context: ComponentFramework.Context<IInputs>
 	private matrixProps: IMatrixProps
 	private containerElement: HTMLDivElement
@@ -33,16 +29,10 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 	constructor() {
 
 		this.dataSetElements = []
-		this.matrixProps = {
-			rawData: [],
-			boxData: [],
-			context: this.context,
-			xAxisTitle: "X",
-			yAxisTitle: "Y"
-		}
 		this.lowThreshold = 4
 		this.mediumThreshold = 14
 		this.matrixSize = 5
+		this.settingsService = new SettingsService();
 	}
 
 	/**
@@ -53,7 +43,11 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
 	 */
-	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
+	public async init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
+
+		// handle the config
+		this.config = await this.settingsService.getConfigSetting(context.parameters.jsonConfig.raw, AppConfig.defaultConfig);
+
 		context.mode.trackContainerResize(true)
 		this.containerElement = document.createElement("div")
 		this.matrixElement = document.createElement("div")
@@ -80,7 +74,8 @@ export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<I
 				boxData: this.initRiskArray(this.matrixSize, this.matrixSize),
 				context: this.context,
 				xAxisTitle: "Likelihood",
-				yAxisTitle: "Consequence"
+				yAxisTitle: "Consequence",
+				config: this.config
 			}
 			ReactDOM.render(
 				React.createElement(

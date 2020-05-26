@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { MatrixBox, IRiskBoxData, IMatrixBoxProps } from './matrixBox';
-import { IInputs } from './generated/ManifestTypes';
+import { IInputs } from '../generated/ManifestTypes';
 import { RiskList, IRiskListProps, IRiskListState } from './riskList';
 import { ResetFilterButton } from './resetFilterButton';
+import { Config } from '../models/config';
 
 export interface RiskItem {
 	guid: string;
@@ -18,6 +19,7 @@ export interface IMatrixProps {
 	context: ComponentFramework.Context<IInputs>;
 	xAxisTitle: string;
 	yAxisTitle: string;
+	config: Config;
 }
 
 export interface IMatrixBoxFilter {
