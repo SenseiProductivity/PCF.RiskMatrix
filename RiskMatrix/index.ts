@@ -17,7 +17,7 @@ import {
 type DataSet = ComponentFramework.PropertyTypes.DataSet
 
 
-export class SenseiPCFRiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class RiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private context: ComponentFramework.Context<IInputs>
 	private matrixProps: IMatrixProps
