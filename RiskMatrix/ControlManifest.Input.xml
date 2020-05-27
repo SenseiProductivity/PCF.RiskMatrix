@@ -5,7 +5,7 @@
     <property name="jsonConfig" display-name-key="JSON config setting" description-key="Other settings stored as JSON in the Sensei Config Settings." of-type="SingleLine.Text" usage="input" required="false" default-value=""/>
     <resources>
       <code path="index.ts" order="1"/>
-      <css path="css/SenseiPCFRiskMatrix.css" order="1" />
+      <css path="css/RiskMatrix.css" order="1" />
     </resources>
   </control>
 </manifest>
