@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="IQ" constructor="RiskMatrix" version="1.0.1" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
-    <data-set name="Risks" display-name-key="Dataset_Display_Key"/>
+  <control namespace="IQ" constructor="RiskMatrix" version="1.2.1" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
+   <data-set name="Risks" display-name-key="Risk field bindings">
+      <property-set name="ID" display-name-key="ID" description-key="Risk ID" of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="riskName" display-name-key="Risk-Name" description-key="Risk title" of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="yAxisTitle" display-name-key="Y-Axis-Title" description-key="Field to be displayed on the Y axis (Consequence/Impact by default)" of-type="Whole.None" usage="bound" required="true" />
+      <property-set name="xAxisTitle" display-name-key="X-Axis-Title" description-key="Field to be displayed on the X axis (Probability/Likelihood by default)" of-type="Whole.None" usage="bound" required="true" />
+    </data-set>
     <property name="jsonConfig" display-name-key="JSON config setting" description-key="Other settings stored as JSON in the Sensei Config Settings." of-type="SingleLine.Text" usage="input" required="false" default-value=""/>
     <resources>
       <code path="index.ts" order="1"/>

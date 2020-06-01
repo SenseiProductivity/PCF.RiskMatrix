@@ -155,7 +155,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 
 											<td>
 												<div style={{ textAlign: 'center', height: '40px' }}>
-													<h2>Risk Matrix</h2>
+													<h2>Risk Matrix Test</h2>
 												</div>
 												<div
 													style={{
