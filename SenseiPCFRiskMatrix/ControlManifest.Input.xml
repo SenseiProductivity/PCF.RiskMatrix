@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="IQ" constructor="RiskMatrix" version="1.2.1" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
+  <control namespace="IQ" constructor="RiskMatrix" version="1.2.5" display-name-key="Sensei Risk Matrix" description-key="Displays an aggregation count of risks on a matrix" control-type="standard">
    <data-set name="Risks" display-name-key="Risk field bindings">
       <property-set name="ID" display-name-key="ID" description-key="Risk ID" of-type="SingleLine.Text" usage="bound" required="true" />
       <property-set name="riskName" display-name-key="Risk-Name" description-key="Risk title" of-type="SingleLine.Text" usage="bound" required="true" />
