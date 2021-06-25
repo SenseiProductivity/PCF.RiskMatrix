@@ -3,7 +3,6 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import { Matrix, IMatrixProps, RiskItem } from "./components/matrix"
 import { IRiskBoxData } from "./components/matrixBox"
-import { SettingsService } from "../../_common/services/SettingsService";
 import { Config } from "./models/config";
 import { AppConfig } from "./AppConfig"
 
@@ -14,7 +13,6 @@ type DataSet = ComponentFramework.PropertyTypes.DataSet
 export class RiskMatrix implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private config: Config;
-	private settingsService: SettingsService;
 	private context: ComponentFramework.Context<IInputs>
 	private matrixProps: IMatrixProps
 	private containerElement: HTMLDivElement
@@ -32,7 +30,6 @@ export class RiskMatrix implements ComponentFramework.StandardControl<IInputs, I
 		this.lowThreshold = 4
 		this.mediumThreshold = 14
 		this.matrixSize = 5
-		this.settingsService = new SettingsService();
 	}
 
 	/**
@@ -46,7 +43,7 @@ export class RiskMatrix implements ComponentFramework.StandardControl<IInputs, I
 	public async init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
 		// handle the config
-		this.config = await this.settingsService.getConfigSetting(context.parameters.jsonConfig.raw, AppConfig.defaultConfig);
+		this.config = AppConfig.defaultConfig;
 
 		context.mode.trackContainerResize(true)
 		this.containerElement = document.createElement("div")
